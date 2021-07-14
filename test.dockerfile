@@ -2,6 +2,7 @@ FROM golang:1.16-alpine as tester
 
 WORKDIR ./app
 
+COPY .env ../.
 COPY ./app .
 COPY go.mod .
 COPY go.sum .
@@ -13,4 +14,5 @@ RUN go get github.com/golangci/golangci-lint/cmd/golangci-lint && \
     go mod download -x && \
     go mod vendor
 
-CMD golangci-lint run -c .golangci.yml && go test ./...
+ENTRYPOINT go test ./... -v
+CMD golangci-lint run -c .golangci.yml -v
